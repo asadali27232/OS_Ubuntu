@@ -1,4 +1,5 @@
-// Array of processes first come first serve implimentation
+// CPU Scheduling
+// Array of processes, first come first serve implimentation
 // Calculate waiting time and throughput
 #include <stdio.h>
 #include <stdlib.h>
