@@ -22,7 +22,7 @@ void throughput_fun(int pros[], int wait[], int throughput[], int size) {
 }
 
 int main () {
-    int pros[4] = {0, 2, 3, 6, 1};
+    int pros[5] = {0, 2, 3, 6, 1};
     int wait[4] = {};
     int throughput[4] = {};
 
