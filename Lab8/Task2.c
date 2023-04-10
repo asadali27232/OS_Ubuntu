@@ -13,7 +13,8 @@ int main()
   int numbers[5] = {1, 2, 3, 4, 5};
   int sum[1];
 
-  if (pipe(fds) == -1 || pipe(fds2) == -1)
+  if (pipe(fds) == -1 || pipe(fds2) == -1)\
+  
   {
     exit(EXIT_FAILURE);
   }
