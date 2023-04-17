@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/types.h>
+#include <stdlib.h>
 
 int main(int argc, char *argv[])
 {
@@ -25,8 +26,8 @@ int main(int argc, char *argv[])
     printf("%s\n", argv[i]);
   }
 
-  // Redirect to a process consisting file name as argument
-  execlp("grep", "grep", "Asad", "output.txt", NULL);
-  
+  char *args[] = {"outCodeFile", argv[1], NULL};
+  execvp(args[0], args);
+
   return 0;
 }
