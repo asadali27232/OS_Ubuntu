@@ -25,9 +25,8 @@ int main(int argc, char *argv[])
     printf("%s\n", argv[i]);
   }
 
-  // Write an other process using exevp()
-  char *args[] = {"cat", "output.txt", NULL};
-  execvp("cat", args);
-
+  // Redirect to a process consisting file name as argument
+  execlp("grep", "grep", "Asad", "output.txt", NULL);
+  
   return 0;
 }
