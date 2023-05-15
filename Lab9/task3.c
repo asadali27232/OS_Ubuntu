@@ -48,9 +48,9 @@ int main()
   pthread_t thread_id[2];
 
   pthread_create(&thread_id[0], NULL, input, NULL);
-  pthread_create(&thread_id[1], NULL, sort, NULL);
+  pthread_join(thread_id[0], NULL); // Place join here to make sure that the array is filled before sorting
 
-  pthread_join(thread_id[0], NULL);
+  pthread_create(&thread_id[1], NULL, sort, NULL);
   pthread_join(thread_id[1], NULL);
 
   return 0;
