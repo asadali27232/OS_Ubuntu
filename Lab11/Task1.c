@@ -13,20 +13,16 @@ int product[buffer_index];
 
 void *producer(void *arg)
 {
-
-  pthread_mutex_lock(&mutex);
-  if (product[5] == 1)
+  for (int i = 0; i < 5; i++)
   {
-    printf("Buffer Full\n");
-    pthread_mutex_unlock(&mutex);
-  }
-  else
-  {
-    for (int i = 0; i < 5; i++)
+    pthread_mutex_lock(&mutex);
+    while (buffer_index == 4)
     {
-      printf("Producer\n");
-      product[i] = 1;
+      pthread_cond_wait(&full, &mutex);
     }
+    product[buffer_index] = 1;
+    buffer_index++;
+    pthread_cond_signal(&empty);
     pthread_mutex_unlock(&mutex);
   }
   return NULL;
@@ -34,19 +30,17 @@ void *producer(void *arg)
 
 void *consumer(void *arg)
 {
-  pthread_mutex_lock(&mutex);
-  if (product[0] == 0)
+  for (int i = 0; i < 5; i++)
   {
-    printf("Buffer Empty\n");
-    pthread_mutex_unlock(&mutex);
-  }
-  else
-  {
-    for (int i = 4; i <= 0; i++)
+    pthread_mutex_lock(&mutex);
+    while (buffer_index == 0)
     {
-      printf("Consumer\n");
-      product[i] = 0;
+      pthread_cond_wait(&empty, &mutex);
     }
+    product[buffer_index] = 0;
+    buffer_index--;
+    pthread_cond_signal(&full);
+    pthread_mutex_unlock(&mutex);
   }
   return NULL;
 }
