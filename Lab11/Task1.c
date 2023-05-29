@@ -1,11 +1,15 @@
-// Mutex Locks
+// Mutex with conditional veriables
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
 #include <unistd.h>
 
-int product[5];
 pthread_mutex_t mutex;
+pthread_cond_t empty;
+pthread_cond_t full;
+
+int buffer_index = ;
+int product[buffer_index];
 
 void *producer(void *arg)
 {
@@ -50,13 +54,18 @@ void *consumer(void *arg)
 int main()
 {
   pthread_mutex_init(&mutex, NULL);
-  pthread_t thread1, thread2;
+  pthread_cond_init(&empty, NULL);
+  pthread_cond_init(&full, NULL);
 
+  pthread_t thread1, thread2;
   pthread_create(&thread1, NULL, producer, NULL);
   pthread_create(&thread2, NULL, consumer, NULL);
   pthread_join(thread1, NULL);
   pthread_join(thread2, NULL);
 
   pthread_mutex_destroy(&mutex);
+  pthread_cond_destroy(&empty);
+  pthread_cond_destroy(&full);
+
   return 0;
 }
