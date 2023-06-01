@@ -68,12 +68,6 @@ $udp1 set packetSize_ 1500
 #===================================
 #        Applications Definition        
 #===================================
-#Setup a FTP Application over TCP/FullTcp/Tahoe connection
-set ftp0 [new Application/FTP]
-$ftp0 attach-agent $tcp0
-$ns at 1.0 "$ftp0 start"
-$ns at 4.0 "$ftp0 stop"
-
 #Setup a CBR Application over UDP connection
 set cbr2 [new Application/Traffic/CBR]
 $cbr2 attach-agent $udp1
@@ -82,6 +76,15 @@ $cbr2 set rate_ 1.0Mb
 $cbr2 set random_ null
 $ns at 0.1 "$cbr2 start"
 $ns at 4.5 "$cbr2 stop"
+
+#Setup a CBR Application over TCP/FullTcp/Tahoe connection
+set cbr3 [new Application/Traffic/CBR]
+$cbr3 attach-agent $tcp0
+$cbr3 set packetSize_ 1000
+$cbr3 set rate_ 1.0Mb
+$cbr3 set random_ null
+$ns at 1.0 "$cbr3 start"
+$ns at 4.0 "$cbr3 stop"
 
 
 #===================================
