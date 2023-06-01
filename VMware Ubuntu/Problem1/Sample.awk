@@ -3,6 +3,7 @@ BEGIN {
     transSize = 0
     startTime = 400
     stopTime = 0
+    throughput = 0
 }
 
 {
@@ -27,22 +28,19 @@ BEGIN {
     }
 
     # Update total received packets' size and store packets arrival time
-    if (event == "r" && rec_id == "2") {
+    if (event == "r" && rec_id == "3" && event_type == "tcp") {
         if (time > stopTime) {
             stopTime = time
         }
         # Store received packet's size
-        #if (flow_id == "1") {
-        #    recvdSize += pkt_size
-        #}
-        if(packet == "tcp") {
-        	recvdSize += pkt_size
+        if (flow_id == "0") {
+            recvdSize += pkt_size
         }
     }
 }
 
 END {
-    throughput = (received * 8) / (stopTime - startTime)
-    printf("%i\t%i\t%.2f\t%.2f\n", transSize, recvdSize, startTime, stopTime)
+    throughput = (recvdSize * 8) / (stopTime - startTime)
+    printf("%.2f\t%.2f\t%.2f\n", startTime, stopTime, recvdSize)
     printf("Throughput: %.2f\n", throughput)
 }
