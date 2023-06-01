@@ -13,38 +13,29 @@ set val(stop)   10.0                         ;# time of simulation end
 set ns [new Simulator]
 
 #Open the NS trace file
-set tracefile [open out.tr w]
+set tracefile [open testTCP.tr w]
 $ns trace-all $tracefile
 
 #Open the NAM trace file
-set namfile [open out.nam w]
+set namfile [open testTCP.nam w]
 $ns namtrace-all $namfile
 
 #===================================
 #        Nodes Definition        
 #===================================
-#Create 4 nodes
+#Create 2 nodes
 set n0 [$ns node]
 set n1 [$ns node]
-set n2 [$ns node]
-set n3 [$ns node]
 
 #===================================
 #        Links Definition        
 #===================================
 #Createlinks between nodes
-$ns duplex-link $n0 $n2 2.0Mb 10ms DropTail
-$ns queue-limit $n0 $n2 50
-$ns duplex-link $n2 $n1 2.0Mb 10ms DropTail
-$ns queue-limit $n2 $n1 50
-$ns duplex-link $n3 $n2 1.7Mb 20ms DropTail
-$ns queue-limit $n3 $n2 50
+$ns duplex-link $n0 $n1 2.0Mb 10ms DropTail
+$ns queue-limit $n0 $n1 50
 
 #Give node position (for NAM)
-$ns duplex-link-op $n0 $n2 orient right-down
-$ns duplex-link-op $n2 $n1 orient left-down
-$ns duplex-link-op $n3 $n2 orient left
-
+$ns duplex-link-op $n0 $n1 orient right
 
 #===================================
 #        Agents Definition        
@@ -52,18 +43,10 @@ $ns duplex-link-op $n3 $n2 orient left
 #Setup a TCP/FullTcp/Tahoe connection
 set tcp0 [new Agent/TCP/FullTcp/Tahoe]
 $ns attach-agent $n0 $tcp0
-set sink2 [new Agent/TCPSink]
-$ns attach-agent $n3 $sink2
-$ns connect $tcp0 $sink2
+set sink1 [new Agent/TCPSink]
+$ns attach-agent $n1 $sink1
+$ns connect $tcp0 $sink1
 $tcp0 set packetSize_ 1500
-
-#Setup a UDP connection
-set udp1 [new Agent/UDP]
-$ns attach-agent $n1 $udp1
-set null3 [new Agent/Null]
-$ns attach-agent $n3 $null3
-$ns connect $udp1 $null3
-$udp1 set packetSize_ 1500
 
 
 #===================================
@@ -73,16 +56,7 @@ $udp1 set packetSize_ 1500
 set ftp0 [new Application/FTP]
 $ftp0 attach-agent $tcp0
 $ns at 1.0 "$ftp0 start"
-$ns at 4.0 "$ftp0 stop"
-
-#Setup a CBR Application over UDP connection
-set cbr1 [new Application/Traffic/CBR]
-$cbr1 attach-agent $udp1
-$cbr1 set packetSize_ 1000
-$cbr1 set rate_ 1.0Mb
-$cbr1 set random_ null
-$ns at 0.1 "$cbr1 start"
-$ns at 4.5 "$cbr1 stop"
+$ns at 2.0 "$ftp0 stop"
 
 
 #===================================
@@ -94,7 +68,7 @@ proc finish {} {
     $ns flush-trace
     close $tracefile
     close $namfile
-    exec nam out.nam &
+    exec nam testTCP.nam &
     exit 0
 }
 $ns at $val(stop) "$ns nam-end-wireless $val(stop)"
