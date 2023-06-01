@@ -10,6 +10,7 @@ BEGIN {
     time = $2
     send_id = $3
     rec_id = $4
+    event_type = $5
     pkt_size = $6
     flow_id = $8
 
@@ -31,15 +32,17 @@ BEGIN {
             stopTime = time
         }
         # Store received packet's size
-        if (flow_id == "1") {
-            recvdSize += pkt_size
-        }
-        if(event == "r" && packet == "tcp" && rec_id == "2") {
-        	
+        #if (flow_id == "1") {
+        #    recvdSize += pkt_size
+        #}
+        if(packet == "tcp") {
+        	recvdSize += pkt_size
         }
     }
 }
 
 END {
+    throughput = (received * 8) / (stopTime - startTime)
     printf("%i\t%i\t%.2f\t%.2f\n", transSize, recvdSize, startTime, stopTime)
+    printf("Throughput: %.2f\n", throughput)
 }
