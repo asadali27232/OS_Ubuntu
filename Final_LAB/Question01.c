@@ -28,5 +28,18 @@ int main()
         pthread_create(&tid[i], NULL, add, (void *)i);
         pthread_join(tid[i], NULL);
     }
-    return 0;
+
+    // Print the C Matris
+    printf("Matrix C:\n");
+    for (int i = 0; i < rows; i++)
+    {
+        printf("[");
+        for (int j = 0; j < columns; j++)
+        {
+            printf("%d ", C[i][j]);
+        }
+        printf("]\n");
+    }
+
+        return 0;
 }
