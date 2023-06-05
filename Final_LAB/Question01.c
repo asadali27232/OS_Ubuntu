@@ -11,10 +11,9 @@ int C[4][4];
 
 void *add(void *arg)
 {
-    int i;
     int row = (int)arg;
 
-    for (i = 0; i < columns; i++)
+    for (int i = 0; i < columns; i++)
     {
         C[row][i] = A[row][i] + B[row][i];
     }
