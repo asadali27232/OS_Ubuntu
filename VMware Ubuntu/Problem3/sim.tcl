@@ -15,7 +15,17 @@ set ns [new Simulator]
 # for data flows (for NAM) 
 $ns color 1 Blue 
 $ns color 2 Red 
+# Create a node
+set n0 [$ns node]
+set n1 [$ns node]
+set n2 [$ns node]
+# Add an agent for FTP over TCP connection
+set ftp0 [new Application/FTP]
+$ftp0 attach-agent $tcp0
+$ftp0 set type_ FTP
 
+# connect nodes with links
+$ns duplex-link $n0 $n2 1Mb 10ms DropTail
 
 set simtype "tcp${interation}-${algorithm}"
 set simflow0 "tcp${interation}-${algorithm}-flow0"
@@ -219,3 +229,5 @@ $ns at 100 "finish"
 
 # Run the simulation 
 $ns run 
+
+# Print all the statistics for the flows

@@ -1,12 +1,11 @@
-// Create a multithreaded program to sum the to matrix 4 by 4 each thread will add each row of the matrix and store the result in the new matrix.
 #include <stdio.h>
 #include <pthread.h>
 
 int rows = 4;
 int columns = 4;
 
-int A[4][4] = {{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}};
-int B[4][4] = {{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}};
+int A[4][4] = {{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}, {1, 2, 3, 4}};
+int B[4][4] = {{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}, {1, 2, 3, 4}};
 int C[4][4];
 
 void *add(void *arg)
@@ -41,5 +40,5 @@ int main()
         printf("]\n");
     }
 
-        return 0;
+    return 0;
 }
